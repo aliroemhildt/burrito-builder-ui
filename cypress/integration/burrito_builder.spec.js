@@ -105,7 +105,7 @@ describe('User input', () => {
       .get('.error-msg').contains('Please enter a name and select ingredients')
   });
 
-  it.only('Should remove an order from the page on remove button click', () => {
+  it('Should remove an order from the page on remove button click', () => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
       { fixture: 'initial_get_data.json' }
       )
