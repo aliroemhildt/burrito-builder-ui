@@ -6,15 +6,23 @@ class OrderForm extends Component {
     this.props = props;
     this.state = {
       name: '',
-      ingredients: []
+      ingredients: [],
+      error: false
     };
   }
 
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.name && this.state.ingredients.length) {
+      const order = {
+        name: this.state.name,
+        ingredients: this.state.ingredients
+      }
+
       this.props.addOrder(this.state);
       this.clearInputs();
+    } else {
+      this.setState({ error: true });
     }
   }
 
@@ -24,7 +32,9 @@ class OrderForm extends Component {
 
   handleIngredientChange = (e) => {
     e.preventDefault();
-    const newIngredient = e.target.name
+    this.setState({ error: false });
+    const newIngredient = e.target.name;
+
     if (this.state.ingredients.includes(newIngredient)) {
       const newList = this.state.ingredients.filter(ingredient => {
         return ingredient !== newIngredient;
@@ -37,6 +47,7 @@ class OrderForm extends Component {
 
   handleNameChange = (e) => {
     e.preventDefault();
+    this.setState({ error: false });
     this.setState({ name: e.target.value });
   }
 
@@ -67,6 +78,7 @@ class OrderForm extends Component {
         <button onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
+        { this.state.error && <p>Please enter a name and select ingredients</p>}
       </form>
     );
   }
