@@ -38,6 +38,14 @@ class App extends Component {
       .then(response => response.json())
       // .then(data => this.setState({ orders: [...this.state.orders, data]}))
       .then(() => this.getOrders())
+      .catch(err => console.error('Error fetching:', err))
+  }
+
+  deleteOrder = (id) => {
+    id = parseInt(id);
+    fetch(`http://localhost:3001/api/v1/orders/${id}`, { method: 'DELETE' })
+      .then(() => this.getOrders())
+      .catch(err => console.error('Error fetching:', err))
   }
 
   render() {
@@ -48,7 +56,7 @@ class App extends Component {
           <OrderForm addOrder={this.addOrder}/>
         </header>
 
-        <Orders orders={this.state.orders}/>
+        <Orders orders={this.state.orders} deleteOrder={this.deleteOrder}/>
       </main>
     );
   }
