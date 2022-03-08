@@ -87,7 +87,7 @@ describe('User input', () => {
       .get('.order').eq(2).find('li').eq(1).contains('steak')
     });
 
-  it.only('Should show an error message on submit if name or ingredients is empty', () => {
+  it('Should show an error message on submit if name or ingredients is empty', () => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
       { fixture: 'initial_get_data.json' }
       )
@@ -104,4 +104,19 @@ describe('User input', () => {
       .get('.submit-btn').click()
       .get('.error-msg').contains('Please enter a name and select ingredients')
   });
+
+  it.only('Should remove an order from the page on remove button click', () => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'initial_get_data.json' }
+      )
+      .visit('http://localhost:3000')
+
+      .get('.order').should('have.length', 2)
+
+      .intercept('GET', 'http://localhost:3001/api/v1/orders',
+        { fixture: 'after_delete_data.json' }
+      )
+      .get('.order').eq(0).find('button').click()
+      .get('.order').should('have.length', 1)
+  })
 });
