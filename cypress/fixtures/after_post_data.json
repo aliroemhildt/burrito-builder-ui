@@ -1,0 +1,30 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "name": "Pat",
+      "ingredients": [
+        "beans",
+        "lettuce",
+        "carnitas",
+        "queso fresco"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Sam",
+      "ingredients": [
+        "steak",
+        "pico de gallo"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Ali", 
+      "ingredients": [
+        "beans", 
+        "steak"
+      ]
+    }
+  ]
+}
