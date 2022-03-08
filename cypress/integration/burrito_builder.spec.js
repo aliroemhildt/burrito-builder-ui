@@ -2,7 +2,7 @@ describe('On page load', () => {
   beforeEach(() => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
       { fixture: 'initial_get_data.json' }
-    )
+      )
       .visit('http://localhost:3000')
   });
 
@@ -51,7 +51,7 @@ describe('User input', () => {
   it('Should update form on input change or ingredient button click', () => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
       { fixture: 'initial_get_data.json' }
-    )
+      )
       .visit('http://localhost:3000')
     
       .get('input')
@@ -87,7 +87,21 @@ describe('User input', () => {
       .get('.order').eq(2).find('li').eq(1).contains('steak')
     });
 
-  it('Should show an error message on submit if name or ingredients is empty', () => {
+  it.only('Should show an error message on submit if name or ingredients is empty', () => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'initial_get_data.json' }
+      )
+      .visit('http://localhost:3000')
+      
+      .get('input').type('Ali')
+      .get('.submit-btn').click()
+      .get('.error-msg').contains('Please enter a name and select ingredients')
 
+      .get('.ingredient-btn').eq(0).click()
+      .get('.error-msg').should('not.exist')
+
+      .get('input').clear()
+      .get('.submit-btn').click()
+      .get('.error-msg').contains('Please enter a name and select ingredients')
   });
 });
