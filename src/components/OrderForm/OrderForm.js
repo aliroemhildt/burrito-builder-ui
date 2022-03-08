@@ -13,13 +13,13 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    
     if (this.state.name && this.state.ingredients.length) {
       const order = {
         name: this.state.name,
         ingredients: this.state.ingredients
       }
-
-      this.props.addOrder(this.state);
+      this.props.addOrder(order);
       this.clearInputs();
     } else {
       this.setState({ error: true });
@@ -53,6 +53,7 @@ class OrderForm extends Component {
 
   render() {
     const possibleIngredients = ['beans', 'steak', 'carnitas', 'sofritas', 'lettuce', 'queso fresco', 'pico de gallo', 'hot sauce', 'guacamole', 'jalapenos', 'cilantro', 'sour cream'];
+    
     const ingredientButtons = possibleIngredients.map(ingredient => {
       return (
         <button key={ingredient} className='ingredient-btn' name={ingredient} onClick={e => this.handleIngredientChange(e)}>
@@ -60,6 +61,9 @@ class OrderForm extends Component {
         </button>
       );
     });
+
+    const errorMessage = this.state.error &&
+      <p className='error-msg'>Please enter a name and select ingredients</p>
 
     return (
       <form>
@@ -78,7 +82,7 @@ class OrderForm extends Component {
         <button className='submit-btn' onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
-        { this.state.error && <p className='error-msg'>Please enter a name and select ingredients</p>}
+        { errorMessage }
       </form>
     );
   }

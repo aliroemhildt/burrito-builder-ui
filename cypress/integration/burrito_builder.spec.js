@@ -85,7 +85,7 @@ describe('User input', () => {
       .get('.order').eq(2).find('h3').contains('Ali')
       .get('.order').eq(2).find('li').eq(0).contains('beans')
       .get('.order').eq(2).find('li').eq(1).contains('steak')
-    });
+  });
 
   it('Should show an error message on submit if name or ingredients is empty', () => {
     cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
@@ -116,7 +116,8 @@ describe('User input', () => {
       .intercept('GET', 'http://localhost:3001/api/v1/orders',
         { fixture: 'after_delete_data.json' }
       )
+
       .get('.order').eq(0).find('button').click()
       .get('.order').should('have.length', 1)
-  })
+  });
 });
