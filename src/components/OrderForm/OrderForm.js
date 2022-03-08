@@ -10,7 +10,6 @@ class OrderForm extends Component {
     };
   }
 
-
   handleSubmit = e => {
     e.preventDefault();
     this.clearInputs();
@@ -18,6 +17,24 @@ class OrderForm extends Component {
 
   clearInputs = () => {
     this.setState({name: '', ingredients: []});
+  }
+
+  handleIngredientChange = (e) => {
+    e.preventDefault();
+    const newIngredient = e.target.name
+    if (this.state.ingredients.includes(newIngredient)) {
+      const newList = this.state.ingredients.filter(ingredient => {
+        return ingredient !== newIngredient
+      });
+      this.setState({ ingredients: newList });
+    } else {
+      this.setState({ ingredients: [...this.state.ingredients, e.target.name] })
+    }
+  }
+
+  handleNameChange = (e) => {
+    e.preventDefault();
+    this.setState({ name: e.target.value })
   }
 
   render() {
