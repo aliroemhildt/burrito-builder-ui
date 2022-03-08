@@ -13,10 +13,18 @@ class App extends Component {
   }
 
   componentDidMount = () => {
+    // fetch('http://localhost:3001/api/v1/orders')
+    //   .then(response => response.json())
+    //   .then(data => this.setState({ orders: data.orders }))
+    //   .catch(err => console.error('Error fetching:', err));
+    this.getOrders()
+  }
+
+  getOrders = () => {
     fetch('http://localhost:3001/api/v1/orders')
       .then(response => response.json())
       .then(data => this.setState({ orders: data.orders }))
-      .catch(err => console.error('Error fetching:', err));
+      .catch(err => console.error('Error fetching:', err))
   }
 
   addOrder = (order) => {
@@ -28,7 +36,8 @@ class App extends Component {
       }
     })
       .then(response => response.json())
-      .then(data => this.setState({ orders: [...this.state.orders, data]}))
+      // .then(data => this.setState({ orders: [...this.state.orders, data]}))
+      .then(() => this.getOrders())
   }
 
   render() {
