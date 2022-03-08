@@ -25,7 +25,7 @@ describe('On page load', () => {
   it('Should show form on page load', () => {
     cy.get('h1').contains('Burrito Builder')
     
-      .get('input[type=text').should('have.length', 1)
+      .get('input').should('have.length', 1)
       .should('have.attr', 'value', '')
 
       .get('.ingredient-btn').should('have.length', 12)
@@ -44,7 +44,50 @@ describe('On page load', () => {
       
       .get('form > p:first').contains('Order: Nothing selected')
       .get('.submit-btn').contains('Submit Order')
+  });
+});
 
-  })
+describe('User input', () => {
+  it('Should update form on input change or ingredient button click', () => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'initial_get_data.json' }
+    )
+      .visit('http://localhost:3000')
+    
+      .get('input')
+      .should('have.attr', 'value', '')
+      .type('Ali')
+      .should('have.attr', 'value', 'Ali')
 
+      .get('form > p:first').contains('Order: Nothing selected')
+      .get('.ingredient-btn:first').click()
+      .get('form > p:first').contains('Order: beans')
+  });
+
+  it('Should add a new order to the page when submit button is clicked', () => {
+    cy.intercept('GET', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'initial_get_data.json' }
+      )
+      .visit('http://localhost:3000')
+      .intercept('POST', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'post_order.json' }
+      )
+      .intercept('GET', 'http://localhost:3001/api/v1/orders',
+      { fixture: 'after_post_data.json' }
+      ) 
+  
+      .get('input').type('Ali')
+      .get('.ingredient-btn').eq(0).click()
+      .get('.ingredient-btn').eq(1).click()
+      .get('.submit-btn').click()
+      
+      .wait(2000)
+      .get('.order').eq(2).find('h3').contains('Ali')
+      .get('.order').eq(2).find('li').eq(0).contains('beans')
+      .get('.order').eq(2).find('li').eq(1).contains('steak')
+    });
+
+  it('Should show an error message on submit if name or ingredients is empty', () => {
+
+  });
 });
