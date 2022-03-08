@@ -7,11 +7,20 @@ import OrderForm from '../../components/OrderForm/OrderForm';
 class App extends Component {
   constructor(props) {
     super();
+    this.state = {
+      orders: []
+    }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     getOrders()
       .catch(err => console.error('Error fetching:', err));
+  }
+
+  getOrders = () => {
+    fetch('http://localhost:3001/api/v1/orders')
+      .then(response => response.json())
+      .then(data => this.setState({ orders: data.orders}))
   }
 
   render() {
