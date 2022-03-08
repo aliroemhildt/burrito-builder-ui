@@ -24,17 +24,17 @@ class OrderForm extends Component {
     const newIngredient = e.target.name
     if (this.state.ingredients.includes(newIngredient)) {
       const newList = this.state.ingredients.filter(ingredient => {
-        return ingredient !== newIngredient
+        return ingredient !== newIngredient;
       });
       this.setState({ ingredients: newList });
     } else {
-      this.setState({ ingredients: [...this.state.ingredients, e.target.name] })
+      this.setState({ ingredients: [...this.state.ingredients, e.target.name] });
     }
   }
 
   handleNameChange = (e) => {
     e.preventDefault();
-    this.setState({ name: e.target.value })
+    this.setState({ name: e.target.value });
   }
 
   render() {
@@ -44,7 +44,7 @@ class OrderForm extends Component {
         <button key={ingredient} name={ingredient} onClick={e => this.handleIngredientChange(e)}>
           {ingredient}
         </button>
-      )
+      );
     });
 
     return (
@@ -65,7 +65,7 @@ class OrderForm extends Component {
           Submit Order
         </button>
       </form>
-    )
+    );
   }
 }
 
