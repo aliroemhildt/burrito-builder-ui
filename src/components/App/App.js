@@ -13,14 +13,10 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    getOrders()
-      .catch(err => console.error('Error fetching:', err));
-  }
-
-  getOrders = () => {
     fetch('http://localhost:3001/api/v1/orders')
       .then(response => response.json())
-      .then(data => this.setState({ orders: data.orders}))
+      .then(data => this.setState({ orders: data.orders }))
+      .catch(err => console.error('Error fetching:', err));
   }
 
   render() {
