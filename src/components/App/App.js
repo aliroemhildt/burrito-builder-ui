@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getOrders} from '../../apiCalls';
+import { getOrders, postOrder, deleteOrder } from '../../apiCalls';
 import Orders from '../../components/Orders/Orders';
 import OrderForm from '../../components/OrderForm/OrderForm';
 
@@ -13,39 +13,22 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    // fetch('http://localhost:3001/api/v1/orders')
-    //   .then(response => response.json())
-    //   .then(data => this.setState({ orders: data.orders }))
-    //   .catch(err => console.error('Error fetching:', err));
-    this.getOrders()
+    this.updateOrders();
   }
 
-  getOrders = () => {
-    fetch('http://localhost:3001/api/v1/orders')
-      .then(response => response.json())
+  updateOrders = () => {
+    getOrders()
       .then(data => this.setState({ orders: data.orders }))
-      .catch(err => console.error('Error fetching:', err))
   }
 
   addOrder = (order) => {
-    fetch('http://localhost:3001/api/v1/orders', {
-      method: 'POST',
-      body: JSON.stringify(order),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      // .then(data => this.setState({ orders: [...this.state.orders, data]}))
-      .then(() => this.getOrders())
-      .catch(err => console.error('Error fetching:', err))
+    postOrder(order)
+      .then(() => this.updateOrders())
   }
 
-  deleteOrder = (id) => {
-    id = parseInt(id);
-    fetch(`http://localhost:3001/api/v1/orders/${id}`, { method: 'DELETE' })
-      .then(() => this.getOrders())
-      .catch(err => console.error('Error fetching:', err))
+  removeOrder = (id) => {
+    deleteOrder(id)
+      .then(() => this.updateOrders())
   }
 
   render() {
@@ -56,7 +39,7 @@ class App extends Component {
           <OrderForm addOrder={this.addOrder}/>
         </header>
 
-        <Orders orders={this.state.orders} deleteOrder={this.deleteOrder}/>
+        <Orders orders={this.state.orders} removeOrder={this.removeOrder}/>
       </main>
     );
   }
